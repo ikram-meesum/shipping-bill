@@ -5,9 +5,6 @@ import Navbar from "../component/Navbar";
 import Footer from "../component/Footer";
 import axios from "axios";
 
-//import dotenv from "dotenv";
-//import env from "react-dotenv";
-
 export default function AddInvoice() {
   const {
     register,
@@ -21,16 +18,30 @@ export default function AddInvoice() {
   let SERVER = JSON.stringify(import.meta.env, ["VITE_SERVER_URL"]);
   SERVER = JSON.parse(SERVER);
   let SERVER_URL = SERVER.VITE_SERVER_URL;
-  console.log(SERVER_URL);
+  //console.log(SERVER_URL);
+
+  let invNo = 0;
+  let finalNo = 0;
+  const count = async () => {
+    const total = await fetch(`${SERVER_URL}/invoice`);
+    const data = await total.json();
+    invNo = 10000 + data.length + 1;
+    finalNo = "zahid2023" + invNo;
+
+    console.log("line 29: ", finalNo);
+    return finalNo;
+  };
+
+  count();
 
   const onSubmit = async (data) => {
     console.log(data);
 
     try {
       const response = await axios.post(`${SERVER_URL}/invoice`, {
-        invoice_no: data.invNo,
+        invoice_no: finalNo,
         invoice_date: data.invDate,
-        invoice_amount: data.invAmount,
+        //invoice_amount: data.invAmount,
         contract_no: data.contractNo,
         shipper_name: data.shipper,
         buyer_name: data.buyerName,
@@ -56,23 +67,15 @@ export default function AddInvoice() {
         container_qty: data.containerQuantity,
       });
       console.log(response.data);
+      const result = response.data.hasOwnProperty("msg");
+      if (result) {
+        alert("This invoice is alredy exist. Please enter the new one.");
+      } else {
+        navigate("/main");
+      }
     } catch (error) {
       console.log(`Following error occured form post invoice: ${error}`);
     }
-    // if (data.username === "ikram@gmail.com" && data.password === "12345") {
-    //   setDisable(true);
-    //   setRain(true);
-
-    //   setTimeout(() => {
-    //     navigate("/main");
-    //   }, 7000);
-    // } else {
-    //   Swal.fire(
-    //     "Authentication Failed",
-    //     "Please enter valid username or password",
-    //     "error"
-    //   );
-    // }
   };
 
   return (
@@ -82,19 +85,6 @@ export default function AddInvoice() {
         <h2 className="text-primary mt-3 mb-3">Invoice Infomation</h2>
 
         <form className="row g-3" onSubmit={handleSubmit(onSubmit)}>
-          <div className="col-md-4">
-            <label htmlFor="inputCity" className="form-label">
-              Invoice Number
-            </label>
-            <input
-              {...register("invNo", { required: true })}
-              type="text"
-              className="form-control"
-            />
-            {errors.invNo && (
-              <p className="text-danger">Invoice number is required.</p>
-            )}
-          </div>
           <div className="col-md-4">
             <label htmlFor="inputCity" className="form-label">
               Invoice Date
@@ -111,17 +101,19 @@ export default function AddInvoice() {
 
           <div className="col-md-4">
             <label htmlFor="inputZip" className="form-label">
-              Invoice Amount
+              Container Quantity
             </label>
             <input
-              {...register("invAmount", { required: true })}
               type="number"
+              maxLength={20}
+              {...register("containerQuantity", { required: true })}
               className="form-control"
             />
-            {errors.invAmount && (
-              <p className="text-danger">Invoice amount is required.</p>
+            {errors.containerQuantity && (
+              <p className="text-danger">Container quantity is required.</p>
             )}
           </div>
+
           {/* Second Row */}
           <div className="col-md-4">
             <label htmlFor="inputZip" className="form-label">
@@ -436,20 +428,6 @@ export default function AddInvoice() {
             />
             {errors.findings && (
               <p className="text-danger">Findings is required.</p>
-            )}
-          </div>
-
-          <div className="col-md-4">
-            <label htmlFor="inputZip" className="form-label">
-              Container Quantity
-            </label>
-            <input
-              type="number"
-              {...register("containerQuantity", { required: true })}
-              className="form-control"
-            />
-            {errors.containerQuantity && (
-              <p className="text-danger">Container quantity is required.</p>
             )}
           </div>
 

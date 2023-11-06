@@ -4,7 +4,7 @@ let invoiceSchema = new mongoose.Schema(
   {
     invoice_no: { type: String, required: true, unique: true },
     invoice_date: { type: Date, required: true },
-    invoice_amount: { type: Number, required: true },
+    // invoice_amount: { type: Number, required: true },
     contract_no: { type: String },
     shipper_name: { type: String },
     buyer_name: { type: String },

@@ -16,5 +16,6 @@ let port = process.env.PORT || 5000;
 
 app.use("/user", require("./routes/user.route"));
 app.use("/invoice", require("./routes/invoice.route"));
+app.use("/detail", require("./routes/detail.route"));
 
 app.listen(4000, () => console.log(`server is running on port ${port}`));

@@ -14,12 +14,12 @@ export default function Main() {
   let SERVER = JSON.stringify(import.meta.env, ["VITE_SERVER_URL"]);
   SERVER = JSON.parse(SERVER);
   let SERVER_URL = SERVER.VITE_SERVER_URL;
-  console.log(SERVER_URL);
+  //console.log(SERVER_URL);
 
   const getInvoices = async () => {
     try {
       const res = await axios.get(`${SERVER_URL}/invoice`);
-      console.log(res.data);
+      //console.log(res.data);
       setInvoices(res.data);
     } catch (error) {
       // Handle errors
@@ -28,7 +28,7 @@ export default function Main() {
   };
 
   useEffect(() => {
-    console.log("test");
+    //console.log("test");
     getInvoices();
   }, []);
 
@@ -54,8 +54,9 @@ export default function Main() {
               <th scope="col">Invoice Date</th>
               <th scope="col">Shipper Name</th>
               <th scope="col">Buyer Name</th>
-              <th scope="col">Edit</th>
-              <th scope="col">Details</th>
+              <th scope="col">Ed</th>
+              <th scope="col">Inv</th>
+              <th scope="col">Det</th>
             </tr>
           </thead>
           <tbody>
@@ -68,12 +69,17 @@ export default function Main() {
                   <td>{inv.shipper_name}</td>
                   <td>{inv.buyer_name}</td>
                   <td>
-                    <Link to={"/"}>
+                    <Link to={"/main"}>
                       <BsPencilSquare color="blue" />
                     </Link>
                   </td>
                   <td>
                     <Link to={`/invdetail/${inv._id}`}>
+                      <BiDetail color="red" />
+                    </Link>
+                  </td>
+                  <td>
+                    <Link to={`/detail/${inv.container_qty}/${inv._id}`}>
                       <BiDetail color="red" />
                     </Link>
                   </td>

@@ -16,7 +16,7 @@ router.get("/:id", async (req, res) => {
 
   try {
     const doc = await Invoice.find({ _id: sid });
-    console.log(doc);
+    // console.log(doc);
     res.json(doc);
   } catch (err) {
     console.log("Error occured from get single invoice", err);
@@ -27,7 +27,7 @@ router.post("/", async (req, res) => {
   const newInvoice = new Invoice();
   newInvoice.invoice_no = req.body.invoice_no;
   newInvoice.invoice_date = req.body.invoice_date;
-  newInvoice.invoice_amount = req.body.invoice_amount;
+  //newInvoice.invoice_amount = req.body.invoice_amount;
   newInvoice.contract_no = req.body.contract_no;
   newInvoice.shipper_name = req.body.shipper_name;
   newInvoice.buyer_name = req.body.buyer_name;
@@ -53,27 +53,21 @@ router.post("/", async (req, res) => {
   newInvoice.container_qty = req.body.container_qty;
 
   try {
-    const result = await newInvoice.save();
-    console.log("Invoice Inserted", result); // result
-    res.json({ msg: "Record Inserted", id: result._id });
+    const isExist = await Invoice.exists({ invoice_no: req.body.invoice_no });
+    console.log("line 57", isExist, "body: ", req.body.invoice_no);
+
+    if (isExist !== null) {
+      console.log("exist server: ", isExist);
+      return res.json({ msg: "This invoice is already exist", isExist });
+    } else {
+      const result = await newInvoice.save();
+      console.log("Invoice Inserted", result); // result
+      return res.json({ id: result._id });
+    }
   } catch (err) {
     console.error("Error occured from post invoices", err);
     res.json({ msg: `Error from post ${err}` });
   }
-
-  ///////////////
-  // const invoiceData = new Invoice({
-  //   user_name: req.body.user_name,
-  //   email: req.body.email,
-  //   password: req.body.password,
-  // });
-
-  // invoiceData.save((err, item) => {
-  //   if (err) {
-  //     return err;
-  //   }
-  //   console.log("User Inserted ", item);
-  //   res.json(item);
 });
 
 router.delete("/:id", async (req, res) => {

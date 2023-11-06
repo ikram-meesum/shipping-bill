@@ -26,6 +26,30 @@ export default function Navbar() {
                 Home
               </Link>
             </li>
+
+            <li className="nav-item">
+              <Link className="nav-link" to="/adddetail">
+                Add Details
+              </Link>
+            </li>
+
+            <li className="nav-item">
+              <Link className="nav-link" to="/">
+                Invoice Report
+              </Link>
+            </li>
+
+            <li className="nav-item">
+              <Link className="nav-link" to="/">
+                Invoice Report
+              </Link>
+            </li>
+
+            <li className="nav-item">
+              <Link className="nav-link" to="/">
+                Invoice Report
+              </Link>
+            </li>
             <li className="nav-item">
               <Link className="nav-link" to="/">
                 Invoice Report

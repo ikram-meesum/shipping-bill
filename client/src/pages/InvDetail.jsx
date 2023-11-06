@@ -45,7 +45,7 @@ export default function InvDetail() {
 
         {invoices.map((inv, ind) => {
           return (
-            <div className="row">
+            <div className="row" key={ind}>
               <div className="col-md-6">
                 <ol className="list-group list-group-numbered">
                   <li className="list-group-item d-flex justify-content-between align-items-start">
@@ -59,13 +59,6 @@ export default function InvDetail() {
                     <div className="ms-2 me-auto">
                       <div className="fw-bold">Invoice Date</div>
                       {dayjs(inv.invoice_date).format("DD-MMM-YYYY")}
-                    </div>
-                  </li>
-
-                  <li className="list-group-item d-flex justify-content-between align-items-start">
-                    <div className="ms-2 me-auto">
-                      <div className="fw-bold">Invoice Amount</div>
-                      {inv.invoice_amount}
                     </div>
                   </li>
 
